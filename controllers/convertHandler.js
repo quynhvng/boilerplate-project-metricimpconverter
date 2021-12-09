@@ -68,7 +68,7 @@ function ConvertHandler() {
     }
     return {
       returnNum: returnNum,
-      returnUnit: this.getReturnUnit(initUnit);
+      returnUnit: this.getReturnUnit(initUnit)
     };
   };
   
