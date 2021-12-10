@@ -1,5 +1,6 @@
 function ConvertHandler() {
-  const inputError = new Error('Invalid input');
+  const numError = new Error('invalid number');
+  const unitError = new Error('invalid unit');
   const units = {
       'gal': 'gallon',
       'l': 'liter',
@@ -14,7 +15,7 @@ function ConvertHandler() {
     let num = input.match(/^\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?(?=[a-z]|$)/i);
     if (!num) {
       if ((/^[a-z]/i).test(input)) return 1;
-      throw inputError;
+      throw numError;
     }
     num = num[0];
     // evaluate number string, including with fraction, rounded
@@ -26,15 +27,15 @@ function ConvertHandler() {
   this.getUnit = function(input) {
     // match word part of input
     let unit = input.match(/(?<=\d|^)[a-z]+$/i);
-    if (!unit) throw inputError;
+    if (!unit) throw unitError;
     unit = unit[0].toLowerCase();
-    if (!Object.keys(units).includes(unit)) throw inputError;
-    return unit;
+    if (!Object.keys(units).includes(unit)) throw unitError;
+    return (unit == 'l') ? 'L' : unit;
   };
   
   this.getReturnUnit = function(initUnit) {
     const returnUnits = {
-      'gal': 'l',
+      'gal': 'L',
       'l': 'gal',
       'lbs': 'kg',
       'kg': 'lbs',
@@ -42,13 +43,13 @@ function ConvertHandler() {
       'km': 'mi'
     }
     let returnUnit = returnUnits[initUnit.toLowerCase()];
-    if (!returnUnit) throw inputError;
+    if (!returnUnit) throw unitError;
     return returnUnit;
   };
 
   this.spellOutUnit = function(unit) {
     let fullUnit = units[unit.toLowerCase()];
-    if (!fullUnit) throw inputError;
+    if (!fullUnit) throw unitError;
     return fullUnit;
   };
   
@@ -77,7 +78,7 @@ function ConvertHandler() {
         returnNum /= miToKm;
         break;
       default:
-        throw inputError;
+        throw unitError;
     }
     return {
       returnNum: Number(returnNum.toFixed(5)),

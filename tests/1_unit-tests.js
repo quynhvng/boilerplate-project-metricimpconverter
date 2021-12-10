@@ -46,7 +46,7 @@ suite('Unit Tests', function(){
       assert.strictEqual(convertHandler.getUnit('1mi'), 'mi', message);
       assert.strictEqual(convertHandler.getUnit('1kg'), 'kg', message);
       assert.strictEqual(convertHandler.getUnit('1lbs'), 'lbs', message);
-      assert.strictEqual(convertHandler.getUnit('1l'), 'l', message);
+      assert.strictEqual(convertHandler.getUnit('1l'), 'L', message);
       assert.strictEqual(convertHandler.getUnit('1gal'), 'gal', message);
       assert.strictEqual(convertHandler.getUnit('100Km'), 'km', message);
       assert.strictEqual(convertHandler.getUnit('10.22KM'), 'km', message);
@@ -70,8 +70,8 @@ suite('Unit Tests', function(){
       assert.strictEqual(convertHandler.getReturnUnit('kg'), 'lbs', message);
       assert.strictEqual(convertHandler.getReturnUnit('lbs'), 'kg', message);
       assert.strictEqual(convertHandler.getReturnUnit('l'), 'gal', message);
-      assert.strictEqual(convertHandler.getReturnUnit('gal'), 'l', message);
-      assert.strictEqual(convertHandler.getReturnUnit('GaL'), 'l', message);
+      assert.strictEqual(convertHandler.getReturnUnit('gal'), 'L', message);
+      assert.strictEqual(convertHandler.getReturnUnit('GaL'), 'L', message);
     });
   });
   suite('Spell out unit', function () {
@@ -91,7 +91,7 @@ suite('Unit Tests', function(){
     const message = 'Wrong conversion result';
     // #11
     test('Gal to l', function () {
-      assert.deepEqual(convertHandler.convert(1, 'gal'), { returnNum: 3.78541, returnUnit: 'l'}, message);
+      assert.deepEqual(convertHandler.convert(1, 'gal'), { returnNum: 3.78541, returnUnit: 'L'}, message);
     });
     // #12
     test('L to gal', function () {
