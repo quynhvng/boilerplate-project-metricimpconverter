@@ -1,15 +1,39 @@
 function ConvertHandler() {
+  const inputError = new Error('Invalid input');
+  const units = {
+      'gal': 'gallon',
+      'l': 'liter',
+      'lbs': 'pound',
+      'kg': 'kilogram',
+      'mi': 'mile',
+      'km': 'kilometer'
+  };
   
   this.getNum = function(input) {
-    return input.match(/^\d+(\.\d+)?(\/\d+(\.\d+)?)?(?=[A-Za-z])/);
+    // match valid number part of input
+    let num = input.match(/^\d+(?:\.\d+)?(?:\/\d+(?:\.\d+)?)?(?=[a-z]|$)/i);
+    if (!num) {
+      if ((/^[a-z]/i).test(input)) return 1;
+      throw inputError;
+    }
+    num = num[0];
+    // evaluate number string, including with fraction, rounded
+    const parts = num.split('/');
+    num = Number(parts[0]) / (Number(parts[1]) || 1)
+    return Number(num.toFixed(5));
   };
   
   this.getUnit = function(input) {
-    return input.match(/(?<=\d)[a-z]+$/i).toLowerCase();
+    // match word part of input
+    let unit = input.match(/(?<=\d|^)[a-z]+$/i);
+    if (!unit) throw inputError;
+    unit = unit[0].toLowerCase();
+    if (!Object.keys(units).includes(unit)) throw inputError;
+    return unit;
   };
   
   this.getReturnUnit = function(initUnit) {
-    const units = {
+    const returnUnits = {
       'gal': 'l',
       'l': 'gal',
       'lbs': 'kg',
@@ -17,25 +41,15 @@ function ConvertHandler() {
       'mi': 'km',
       'km': 'mi'
     }
-    if (!Object.keys(units).includes(initUnit.toLowerCase())) {
-      console.log('Invalid unit');
-      return;
-    } else return units[initUnit];
+    let returnUnit = returnUnits[initUnit.toLowerCase()];
+    if (!returnUnit) throw inputError;
+    return returnUnit;
   };
 
   this.spellOutUnit = function(unit) {
-    const fullUnit = {
-      'gal': 'gallon',
-      'l': 'liter',
-      'lbs': 'pound',
-      'kg': 'kilogram',
-      'mi': 'mile',
-      'km': 'kilometer'
-    }
-    if (!Object.keys(units).includes(unit.toLowerCase())) {
-      console.log('Invalid unit');
-      return;
-    } else return fullUnit[unit];
+    let fullUnit = units[unit.toLowerCase()];
+    if (!fullUnit) throw inputError;
+    return fullUnit;
   };
   
   this.convert = function(initNum, initUnit) {
@@ -63,11 +77,10 @@ function ConvertHandler() {
         returnNum /= miToKm;
         break;
       default:
-        console.log('Invalid unit');
-        return;
+        throw inputError;
     }
     return {
-      returnNum: returnNum,
+      returnNum: Number(returnNum.toFixed(5)),
       returnUnit: this.getReturnUnit(initUnit)
     };
   };
@@ -79,7 +92,6 @@ function ConvertHandler() {
     returnUnit += (returnNum == 1) ? '' : 's';
     return `${initNum} ${initUnit} converts to ${returnNum} ${returnUnit}`;
   };
-  
 }
 
 module.exports = ConvertHandler;

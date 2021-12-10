@@ -30,8 +30,8 @@ suite('Unit Tests', function(){
     });
     // #5
     test('Double fraction', function () {
-      assert.throws(convertHandler.getNum('3/2/3km'));
-      assert.throws(convertHandler.getNum('33.35/22.55/53.51km'));
+      assert.throws(() => {convertHandler.getNum('3/2/3km')});
+      assert.throws(() => {convertHandler.getNum('33.35/22.55/53.51km')});
     });
     // #6
     test('No numerical input', function () {
@@ -55,10 +55,10 @@ suite('Unit Tests', function(){
     });
     // #8
     test('Invalid input unit', function () {
-      assert.throws(convertHandler.getUnit('10.55/32.33'));
-      assert.throws(convertHandler.getUnit('cm'));
-      assert.throws(convertHandler.getUnit('1cm'));
-      assert.throws(convertHandler.getUnit('10.55/33.22cm'));
+      assert.throws(() => {convertHandler.getUnit('10.55/32.33')});
+      assert.throws(() => {convertHandler.getUnit('cm')});
+      assert.throws(() => {convertHandler.getUnit('1cm')});
+      assert.throws(() => {convertHandler.getUnit('10.55/33.22cm')});
     });
   });
   suite('Getting return unit', function () {
